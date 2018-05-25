@@ -30,7 +30,7 @@
             <div th:if="${formTraLoiDto.cauHoi}">
             <form action="#" th:action="@{/sinhvien-post}" method="post" class="panel panel-default">
                 <div class="panel-heading">
-                    <p th:text="'Câu '+${formTraLoiDto.sttCauHoi}" ></p>
+                    <p th:text="'Câu '+${formTraLoiDto.sttCauHoi} " ></p>
                 </div>
                 <div class="panel-body">
                     <input type="hidden" th:field="${formTraLoiDto.sttCauHoi}" />

@@ -5,6 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import project.ck1.thituluan.dto.FormGiaoVienDto;
 import project.ck1.thituluan.dto.FormTraLoiDto;
 import project.ck1.thituluan.entity.CauHoi;
 import project.ck1.thituluan.entity.TaiKhoan;
@@ -70,18 +71,35 @@ public class DefaultController {
     }
 
     @GetMapping("/traloi")
-    public String traloi(Model model, @RequestParam("sv") String username){
+    public String traloi(Model model, @RequestParam("sv") String sv){
         List<TaiKhoan> taiKhoans = taiKhoanRepository.findAll();
         List<String> Usernames = taiKhoans.stream().filter(taiKhoan -> taiKhoan.getCapbac().equals("SV")).map(taiKhoan -> taiKhoan.getUsername())
                 .collect(Collectors.toList());
 
-        List<TraLoi> traLois = traLoiRepository.findAll();
+        List<TraLoi> traLoiAll = traLoiRepository.findAll();
+        List<TraLoi> traLoiSV= traLoiAll.stream().filter(tl -> tl.getUsername().equals(sv)).collect(Collectors.toList());
+
         List<CauHoi> cauHois = cauHoiRepository.findAll();
 
-        model.addAttribute("traLois",traLois);
-        model.addAttribute("cauHois",cauHois);
+        List<FormGiaoVienDto> formGiaoVienDtos = new ArrayList<>();
+        for(CauHoi cauHoi : cauHois){
+            FormGiaoVienDto formGiaoVienDto = new FormGiaoVienDto();
+            formGiaoVienDto.setSttCauHoi(cauHoi.getSttCauHoi());
+            formGiaoVienDto.setCauHoi(cauHoi.getNoiDungCauHoi());
+            formGiaoVienDto.setCauTraLoiChinhXac(cauHoi.getCauTraLoiChinhXac());
+            for(TraLoi traLoi : traLoiSV){
+                if(traLoi.getSttCauHoi() == cauHoi.getSttCauHoi()){
+                    formGiaoVienDto.setCauTraLoiSV(traLoi.getCauTraLoi());
+                    break;
+                }
+            }
+            formGiaoVienDtos.add(formGiaoVienDto);
+        }
+
+        model.addAttribute("formGiaoVienDtos",formGiaoVienDtos);
         model.addAttribute("Usernames", Usernames);
         model.addAttribute("showDetail", true);
+        model.addAttribute("sv",sv);
         return "/giaovien";
     }
 
