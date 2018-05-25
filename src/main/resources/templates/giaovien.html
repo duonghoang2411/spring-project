@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Giáo viên</title>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="container">
+
+    <div class="starter-template">
+        <h1>Trang dành cho giáo viên</h1>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Danh sách sinh viên
+                    </div>
+                    <div class="panel-body">
+                        <div class="list-group" th:each="Username : ${Usernames}">
+                            <a th:id="${Username}" th:href="@{/traloi?sv=(${Username})}" class="list-group-item list-group-item-action active" th:text="${Username}"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-8">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Câu trả lời
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label for="cauTraLoi">Câu hỏi:</label>
+                        <textarea class="form-control" rows="3" id="cauTraLoi" name="cauTraLoi"
+                                  th:field="${formTraLoiDto.cauTraLoi}"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.container -->
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

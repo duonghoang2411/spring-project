@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Sinh viên</title>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="container">
+
+    <div class="starter-template">
+        <h1>Trang sinh viên thi</h1>
+    </div>
+    <div class="container"></div>
+    <div class="row">
+        <div class="col-xs-4">
+            <div class="panel panel-default">
+                <div class="container">
+                <h2 th:inline="text">Sinh Viên: [[${#httpServletRequest.remoteUser}]]</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-8">
+            <div th:if="!${formTraLoiDto.cauHoi}">
+                <h2 th:inline="text">Chúc mừng bạn đã hoàn thành bài thi</h2>
+                <a href="/sinhvien?question=1">Làm lại bài</a>
+            </div>
+            <div th:if="${formTraLoiDto.cauHoi}">
+            <form action="#" th:action="@{/sinhvien-post}" method="post" class="panel panel-default">
+                <div class="panel-heading">
+                    <p th:text="'Câu '+${formTraLoiDto.sttCauHoi}" ></p>
+                </div>
+                <div class="panel-body">
+                    <input type="hidden" th:field="${formTraLoiDto.sttCauHoi}" />
+                    <input type="hidden" th:field="${formTraLoiDto.hanhDong}" name="hanhDong" id="hanhDong"/>
+                    <div class="form-group">
+                        <label for="cauHoi">Câu hỏi:</label>
+                        <textarea class="form-control" rows="3" id="cauHoi" name="username" readonly="true"
+                            th:field="${formTraLoiDto.cauHoi}"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="cauTraLoi">Trả lời:</label>
+                        <textarea class="form-control" rows="3" id="cauTraLoi" name="cauTraLoi"
+                            th:field="${formTraLoiDto.cauTraLoi}"></textarea>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div th:if="${formTraLoiDto.sttCauHoi} > 1">
+                                    <input type="submit" class="btn btn-primary pull-left" name="previous" id="previous" value="Trở về" onclick="funcPre();"/>
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <input class="btn btn-primary pull-right" name="next" id="next" type="submit" value="Tiếp theo" onclick="funcNext();"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+
+</div>
+<!-- /.container -->
+<div th:replace="fragments/footer :: footer"/>
+<script type="text/javascript">
+function funcNext(){
+    document.getElementById("hanhDong").value = "next";
+}
+
+function funcPre(){
+    document.getElementById("hanhDong").value = "previous";
+}
+</script>
+</body>
+</html>
